@@ -5,8 +5,6 @@ Provides a hierarchy of exceptions for different error conditions,
 enabling precise error handling and debugging.
 """
 
-from typing import Optional
-
 
 class UniGzipError(Exception):
     """
@@ -15,7 +13,7 @@ class UniGzipError(Exception):
     All uni-gzip related exceptions inherit from this class.
     """
 
-    def __init__(self, message: str, file_path: Optional[str] = None):
+    def __init__(self, message: str, file_path: str | None = None):
         """
         Initialize exception with error context.
 
@@ -33,7 +31,7 @@ class UniGzipJsonError(UniGzipError):
     Base exception class for uni-gzip JSON processing errors.
     """
 
-    def __init__(self, message: str, file_path: Optional[str] = None):
+    def __init__(self, message: str, file_path: str | None = None):
         """
         Initialize exception.
 
@@ -52,7 +50,7 @@ class UniGzipJsonReadError(UniGzipJsonError):
     such as file not found, invalid gzip format, JSON parsing errors, or I/O errors.
     """
 
-    def __init__(self, message: str, file_path: Optional[str] = None):
+    def __init__(self, message: str, file_path: str | None = None):
         """
         Initialize exception.
 
@@ -71,7 +69,7 @@ class UniGzipJsonWriteError(UniGzipJsonError):
     such as permission denied, disk space issues, or I/O errors.
     """
 
-    def __init__(self, message: str, file_path: Optional[str] = None):
+    def __init__(self, message: str, file_path: str | None = None):
         """
         Initialize exception.
 
@@ -87,7 +85,7 @@ class UniGzipTxtError(UniGzipError):
     Base exception class for uni-gzip text processing errors.
     """
 
-    def __init__(self, message: str, file_path: Optional[str] = None):
+    def __init__(self, message: str, file_path: str | None = None):
         """
         Initialize exception.
 
@@ -106,7 +104,7 @@ class UniGzipTxtReadError(UniGzipTxtError):
     such as file not found, invalid gzip format, encoding errors, or I/O errors.
     """
 
-    def __init__(self, message: str, file_path: Optional[str] = None):
+    def __init__(self, message: str, file_path: str | None = None):
         """
         Initialize exception.
 
@@ -125,7 +123,7 @@ class UniGzipTxtWriteError(UniGzipTxtError):
     such as permission denied, disk space issues, or I/O errors.
     """
 
-    def __init__(self, message: str, file_path: Optional[str] = None):
+    def __init__(self, message: str, file_path: str | None = None):
         """
         Initialize exception.
 

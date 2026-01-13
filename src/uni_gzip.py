@@ -1,7 +1,7 @@
 """
 Unified Gzip Processing Module
 
-Provides utilities for reading and writing gzip-compressed JSON and text files, 
+Provides utilities for reading and writing gzip-compressed JSON and text files,
 and compressing data to bytes in memory.
 All operations use UTF-8 encoding. JSON files use compact format (no spaces, no ASCII escaping).
 """
@@ -10,14 +10,14 @@ import gzip
 import json
 import logging
 from pathlib import Path
-from typing import Any, Iterable, Union
+from typing import Any, Iterable
 
 from .exceptions import UniGzipJsonReadError, UniGzipJsonWriteError, UniGzipTxtReadError, UniGzipTxtWriteError
 
 logger = logging.getLogger(__name__)
 
 
-def readJsonGz(path: Union[str, Path]) -> Any:
+def readJsonGz(path: str | Path) -> Any:
     """
     Read a gzip-compressed JSON file.
 
@@ -53,7 +53,7 @@ def readJsonGz(path: Union[str, Path]) -> Any:
         raise UniGzipJsonReadError(f"Unexpected error reading {path_str}: {e}", file_path=path_str) from e
 
 
-def writeJsonGz(path: Union[str, Path], data: Any) -> None:
+def writeJsonGz(path: str | Path, data: Any) -> None:
     """
     Write data to a gzip-compressed JSON file.
 
@@ -111,7 +111,7 @@ def compressJSON(data: Any) -> bytes:
         raise
 
 
-def readTxtGz(path: Union[str, Path]) -> str:
+def readTxtGz(path: str | Path) -> str:
     """
     Read a gzip-compressed text file.
 
@@ -147,7 +147,7 @@ def readTxtGz(path: Union[str, Path]) -> str:
         raise UniGzipTxtReadError(f"Unexpected error reading {path_str}: {e}", file_path=path_str) from e
 
 
-def writeTxtGz(path: Union[str, Path], content: Union[str, Iterable[str]]) -> None:
+def writeTxtGz(path: str | Path, content: str | Iterable[str]) -> None:
     """
     Write content to a gzip-compressed text file.
 
@@ -191,7 +191,7 @@ def writeTxtGz(path: Union[str, Path], content: Union[str, Iterable[str]]) -> No
         raise UniGzipTxtWriteError(f"Unexpected error writing to {path_str}: {e}", file_path=path_str) from e
 
 
-def compressTxt(content: Union[str, Iterable[str]]) -> bytes:
+def compressTxt(content: str | Iterable[str]) -> bytes:
     """
     Compress text content to a gzip-compressed byte stream in memory.
 
