@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "uni-gzip"
-version = "1.0.0"
+version = "1.1.0"
 description = "A unified Python library for reading and writing gzip-compressed JSON and text files"
 readme = "README.md"
 requires-python = ">=3.10"

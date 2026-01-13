@@ -1,7 +1,8 @@
 """
 Unified Gzip Processing Module
 
-Provides utilities for reading and writing gzip-compressed JSON and text files.
+Provides utilities for reading and writing gzip-compressed JSON and text files, 
+and compressing data to bytes in memory.
 All operations use UTF-8 encoding. JSON files use compact format (no spaces, no ASCII escaping).
 """
 
@@ -86,6 +87,30 @@ def writeJsonGz(path: Union[str, Path], data: Any) -> None:
         raise UniGzipJsonWriteError(f"Unexpected error writing to {path_str}: {e}", file_path=path_str) from e
 
 
+def compressJSON(data: Any) -> bytes:
+    """
+    Compress data to a gzip-compressed JSON byte stream in memory.
+
+    Serializes the data to JSON and compresses it using gzip.
+    Uses compact JSON format (no spaces, no ASCII escaping) and UTF-8 encoding.
+
+    Args:
+        data: Data to serialize (must be JSON-serializable).
+
+    Returns:
+        Gzip-compressed bytes.
+
+    Raises:
+        TypeError: If data is not JSON-serializable.
+    """
+    try:
+        json_str = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+        return gzip.compress(json_str.encode("utf-8"))
+    except TypeError:
+        # Re-raise TypeError for non-serializable data
+        raise
+
+
 def readTxtGz(path: Union[str, Path]) -> str:
     """
     Read a gzip-compressed text file.
@@ -164,3 +189,29 @@ def writeTxtGz(path: Union[str, Path], content: Union[str, Iterable[str]]) -> No
         raise
     except Exception as e:
         raise UniGzipTxtWriteError(f"Unexpected error writing to {path_str}: {e}", file_path=path_str) from e
+
+
+def compressTxt(content: Union[str, Iterable[str]]) -> bytes:
+    """
+    Compress text content to a gzip-compressed byte stream in memory.
+
+    Args:
+        content: Text content to compress. Can be:
+            - A string: compressed as-is
+            - An iterable of strings: strings are joined and compressed
+
+    Returns:
+        Gzip-compressed bytes.
+
+    Raises:
+        TypeError: If content is not a string or iterable of strings.
+    """
+    if isinstance(content, str):
+        return gzip.compress(content.encode("utf-8"))
+
+    # content is an iterable of strings
+    try:
+        full_content = "".join(content)
+        return gzip.compress(full_content.encode("utf-8"))
+    except TypeError:
+        raise TypeError(f"content must be a string or iterable of strings, got {type(content).__name__}")

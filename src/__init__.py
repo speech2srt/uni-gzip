@@ -6,6 +6,7 @@ This package provides utilities for:
 - Writing data to gzip-compressed JSON files
 - Reading gzip-compressed text files
 - Writing text content to gzip-compressed files
+- Compressing JSON and text to bytes in memory
 - Automatic UTF-8 encoding handling
 - Compact JSON format for efficient storage
 """
@@ -13,9 +14,9 @@ This package provides utilities for:
 import logging
 
 from .exceptions import UniGzipError, UniGzipJsonError, UniGzipJsonReadError, UniGzipJsonWriteError, UniGzipTxtError, UniGzipTxtReadError, UniGzipTxtWriteError
-from .uni_gzip import readJsonGz, readTxtGz, writeJsonGz, writeTxtGz
+from .uni_gzip import compressJSON, compressTxt, readJsonGz, readTxtGz, writeJsonGz, writeTxtGz
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 # Configure library root logger
 # Use NullHandler to ensure library remains silent when user hasn't configured logging
@@ -28,6 +29,8 @@ __all__ = [
     "writeJsonGz",
     "readTxtGz",
     "writeTxtGz",
+    "compressJSON",
+    "compressTxt",
     "UniGzipError",
     "UniGzipJsonError",
     "UniGzipJsonReadError",

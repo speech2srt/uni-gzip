@@ -1,10 +1,11 @@
 # uni-gzip
 
-A unified lightweight Python library for reading and writing gzip-compressed JSON and text files with UTF-8 encoding and compact JSON format.
+A unified lightweight Python library for reading and writing gzip-compressed JSON and text files, and compressing data to bytes in memory.
 
 ## Features
 
-- **Unified API**: Four simple functions (`readJsonGz`, `writeJsonGz`, `readTxtGz`, `writeTxtGz`) for all operations
+- **Unified API**: Simple functions (`readJsonGz`, `writeJsonGz`, `compressJSON`, etc.) for all operations
+- **Memory-efficient**: Supports in-memory compression to bytes without writing to disk
 - **UTF-8 encoding**: Automatic handling of UTF-8 encoding for international characters
 - **Compact JSON format**: Uses minimal JSON format (no spaces, no ASCII escaping) for efficient storage
 - **Flexible text writing**: Supports writing strings or iterables of strings
@@ -49,6 +50,21 @@ writeTxtGz("output.txt.gz", lines)
 # Read a gzip-compressed text file
 content = readTxtGz("output.txt.gz")
 print(content)
+```
+
+### In-memory compression to bytes
+
+```python
+from uni_gzip import compressJSON, compressTxt
+
+# Compress data to gzip JSON bytes
+data = {"key": "value", "number": 42}
+gz_bytes = compressJSON(data)
+# Now you can upload gz_bytes to Storage, etc.
+
+# Compress text to gzip bytes
+content = "Hello, World!"
+gz_bytes = compressTxt(content)
 ```
 
 ### Using Path objects
@@ -123,6 +139,31 @@ data = {"key": "value", "number": 42}
 writeJsonGz("output.json.gz", data)
 ```
 
+### `compressJSON(data)`
+
+Compress data to a gzip-compressed JSON byte stream in memory.
+
+**Parameters:**
+
+- `data` (Any): Data to serialize (must be JSON-serializable).
+
+**Returns:**
+
+- `bytes`: Gzip-compressed bytes.
+
+**Raises:**
+
+- `TypeError`: If data is not JSON-serializable.
+
+**Example:**
+
+```python
+from uni_gzip import compressJSON
+
+data = {"key": "value", "number": 42}
+gz_bytes = compressJSON(data)
+```
+
 ### `readTxtGz(path)`
 
 Read a gzip-compressed text file.
@@ -183,6 +224,37 @@ writeTxtGz("output.txt.gz", "Hello, World!")
 # Write multiple lines
 lines = ["Line 1", "Line 2", "Line 3"]
 writeTxtGz("output.txt.gz", lines)
+```
+
+### `compressTxt(content)`
+
+Compress text content to a gzip-compressed byte stream in memory.
+
+**Parameters:**
+
+- `content` (str | Iterable[str]): Text content to compress. Can be:
+  - A string: compressed as-is
+  - An iterable of strings: joined and compressed
+
+**Returns:**
+
+- `bytes`: Gzip-compressed bytes.
+
+**Raises:**
+
+- `TypeError`: If content is not a string or iterable of strings.
+
+**Example:**
+
+```python
+from uni_gzip import compressTxt
+
+# Compress a string
+gz_bytes = compressTxt("Hello, World!")
+
+# Compress multiple lines
+lines = ["Line 1", "Line 2", "Line 3"]
+gz_bytes = compressTxt(lines)
 ```
 
 ## Exceptions
